@@ -42,9 +42,9 @@ const Login = () => {
     }
 
     return(
-        <div className={"h-screen w-screen flex flex-row bg-[#31363f]"} dir={'rtl'}>
-            <div className={"flex flex-col h-full w-full items-center bg-gradient-to-r from-[#222831] to-gray-700 justify-between p-5"}>
-                <div className={'flex flex-col text-center gap-5'}>
+        <div className={"flex items-center justify-center h-screen w-screen flex flex-row bg-[#31363f] bg-gradient-to-r from-[#222831] to-gray-700"} dir={'rtl'}>
+            <div className={"flex flex-col items-center bg-gradient-to-r from-[#222831] to-gray-700 justify-between p-10 rounded-xl"}>
+                <div className={'flex flex-col text-center gap-5 mb-5'}>
                     <p className={'text-white text-5xl'}>SAMA</p>
                     <p className={"text-base text-gray-300"}>سامانه مدیریت استادیار</p>
                 </div>
@@ -74,7 +74,8 @@ const Login = () => {
                         pr-3 pl-3 shadow-lg focus:outline-none focus:border-slate-400 focus:ring-slate-400 focus:ring-1 '
                             type="password"/>
                     </div>
-                    <button className='font-bold drop-shadow-md text-[#222831] text-center mt-20 rounded-xl bg-[#76ABAE] px-16 py-2 pb-3 shadow-sm shadow-[#EEEEEE]'
+                    <button className='font-bold drop-shadow-md text-[#222831] text-center mt-20 rounded-xl bg-[#76ABAE] px-16 py-2 pb-3
+                    shadow-sm shadow-[#EEEEEE] hover:scale-105 transition ease-in-out delay-50'
                             type={"submit"}>
                         ورود
                     </button>
@@ -91,13 +92,13 @@ const Login = () => {
                     </p>}
 
                 </form>
-                <div className={"flex flex-row gap-28 text-white text-lg"}>
-                    <p>
+                <div className={"flex flex-row gap-28 text-white text-lg mt-5"}>
+                    <button>
                         ارتباط با پشتیبانی
-                    </p>
-                    <p>
+                    </button>
+                    <button>
                         شرایط و قوانین
-                    </p>
+                    </button>
                 </div>
             </div>
         </div>

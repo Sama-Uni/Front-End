@@ -3,7 +3,7 @@ import {useState} from "react";
 const Footer = () => {
 
     return(
-        <div className={'flex flex-col py-5 w-screen bg-[#31363f] justify-center gap-2 px-5'} dir={'rtl'}>
+        <div className={'flex flex-col py-3 w-screen bg-[#31363f] justify-center px-5'} dir={'rtl'}>
             <div className={'w-screen flex flex-row h-full'}>
                 <p className={'text-white text-3xl basis-5/12 flex items-center'}>
                      سما - سامانه مدیریت استادیار

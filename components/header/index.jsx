@@ -1,7 +1,8 @@
 import {useState} from "react";
 
 const Header = () => {
-    const [professor , setProfessor]=useState([{name: 'بی نام' ,lastName:'' , img:'/sefid.png'},{name: 'بی نام' ,lastName:'' , img:''}]);
+    const [professor , setProfessor]=useState([
+        {name: 'بی نام' ,lastName:'' , img:'/sefid.png'},{name: 'بی نام' ,lastName:'' , img:''}]);
     const x = () => {
         setProfessor([{name:'پیمان' ,lastName: 'ادیبی' }])
         setProfessor([{name:'مهران' ,lastName: 'رضایی' }])
