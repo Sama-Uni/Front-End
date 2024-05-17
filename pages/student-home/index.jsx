@@ -1,8 +1,15 @@
 import Courses from "@/components/courses";
 import StudentGuard from "@/components/guards/studentGuard";
 import Layout from "@/components/layout_TAs";
+import { getStudentCourseAPI } from "@/utils/api/course";
+import { useQuery } from "@tanstack/react-query";
 
 const StuHome = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["studentCourseList"],
+    queryFn: () => getStudentCourseAPI(),
+  });
+
   return (
     <StudentGuard>
       <Layout>
@@ -12,7 +19,7 @@ const StuHome = () => {
         >
           <div className={"flex flex-col px-10 gap-5 my-10"}>
             <p className={"text-3xl text-gray-900 "}> درس های انتخابی</p>
-            <Courses />
+            {isLoading ? "..." : <Courses courses={data ? data : []} />}
           </div>
         </div>
       </Layout>

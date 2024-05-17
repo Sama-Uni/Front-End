@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Course from "@/components/course";
 
 const Courses = ({ courses }) => {
@@ -14,9 +13,8 @@ const Courses = ({ courses }) => {
   return (
     <div className={" grid grid-cols-4 gap-4"}>
       {courses?.map((k, index) => (
-        <div>
+        <div key={`course-${index}`}>
           <Course
-            key={`course-${index}`}
             id={k.id}
             name={k.name}
             term={k.term}

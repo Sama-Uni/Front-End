@@ -30,3 +30,8 @@ export const deleteCourseAPI = async (data) => {
 
   return response.data;
 };
+
+export const getStudentCourseAPI = async () => {
+  const response = await apiService.get(`/users/student/home/`);
+  return response.data;
+};
