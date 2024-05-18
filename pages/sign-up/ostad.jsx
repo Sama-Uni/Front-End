@@ -88,7 +88,7 @@ const SignUp = () => {
               <input
                 name={"userName"}
                 onChange={(event) => {
-                  setFormValue({ ...formValue, id: event.target.value });
+                  setFormValue({ ...formValue, firstname: event.target.value });
                 }}
                 className=" h-12 block bg-blue1 w-full border border-slate-300 rounded-xl text-black
                         pr-3 pl-3 shadow-lg focus:outline-none focus:border-slate-400 focus:ring-slate-400 focus:ring-1 "
@@ -103,7 +103,7 @@ const SignUp = () => {
               <input
                 name={"userName"}
                 onChange={(event) => {
-                  setFormValue({ ...formValue, firstname: event.target.value });
+                  setFormValue({ ...formValue, id: event.target.value });
                 }}
                 className=" h-12 block bg-blue1 w-full border border-slate-300 rounded-xl text-black
                         pr-3 pl-3 shadow-lg focus:outline-none focus:border-slate-400 focus:ring-slate-400 focus:ring-1 "

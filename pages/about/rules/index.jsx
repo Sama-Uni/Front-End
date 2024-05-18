@@ -4,9 +4,9 @@ const TermsAndConditions = () => {
   return (
     <div
       dir="rtl"
-      className="bg-gray-800 text-white w-screen h-screen px-10 pt-10 overflow-hidden"
+      className="bg-[#EEEEEE] text-gray-800 w-screen h-screen px-10 pt-10 overflow-hidden"
     >
-      <h1 className="text-3xl font-bold text-center text-white">
+      <h1 className="text-3xl font-bold text-center text-gray-800">
         شرایط و قوانین سایت
       </h1>
 
@@ -118,7 +118,7 @@ const TermsAndConditions = () => {
         </p>
         <br />
       </section>
-      <h3 className="text-2xl font-bold text-center text-white">با تشکر</h3>
+      <h3 className="text-2xl font-bold text-center text-gray-500">با تشکر</h3>
     </div>
   );
 };

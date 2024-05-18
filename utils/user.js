@@ -1,5 +1,7 @@
 import { USER_KEY } from "./api/axios";
+import { isSSR } from "./isSrr";
 
 export const getUser = () => {
-    return JSON.parse(localStorage.getItem(USER_KEY));
-  };
+  if (isSSR()) return undefined;
+  return JSON.parse(localStorage.getItem(USER_KEY));
+};

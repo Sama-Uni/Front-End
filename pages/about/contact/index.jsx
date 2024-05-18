@@ -5,7 +5,7 @@ const ContactUs = () => {
     <>
       <div
         dir="rtl"
-        className="bg-gray-800 text-white h-screen w-screen overflow-hidden px-10 pt-10"
+        className="bg-[#EEEEEE] text-gray-800 h-screen w-screen overflow-hidden px-10 pt-10"
       >
         <h1 className="text-3xl font-bold text-center">تماس با ما</h1>
         <br />
@@ -42,15 +42,12 @@ const ContactUs = () => {
           </p>
           <p className="text-base font-medium">
             تلگرام :{" "}
-            <a
-              href="https://t.me/samaostadyar"
-              className="text-blue-500 underline"
-            >
+            <a href="https://t.me/samaostadyar" className=" underline">
               https://t.me/samaostadyar
             </a>
           </p>
           <p className="text-base font-medium">اینستاگرام : samaostadyar@</p>
-          <p className="text-base font-medium">لینکدبن : [LinkedIn link]</p>
+          <p className="text-base font-medium">لینکدبن : linkedin.com</p>
           <hr className="w-full border-gray-400 my-4" />
 
           <li className="font-bold">تلفن</li>

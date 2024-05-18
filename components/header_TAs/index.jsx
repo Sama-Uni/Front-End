@@ -1,11 +1,15 @@
 import { DRF_TOKEN_KEY, USER_KEY } from "@/utils/api/axios";
+import { falsyString } from "@/utils/falsyString";
+import { getUser } from "@/utils/user";
 import { Menu, MenuItem } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Header = () => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isMounted, setIsMounted] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -14,8 +18,11 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const user =
-    typeof localStorage !== "undefined" && localStorage.getItem("user");
+  const user = getUser();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <div
@@ -35,12 +42,9 @@ const Header = () => {
       <div
         className={"text-white basis-8/12 flex flex-row gap-16 items-center"}
       >
-        <a href="/student-home" className={""}>
-          خانه
-        </a>
-        <a href="/student-requests" className={""}>
-          درخواست های من
-        </a>
+        <Link href="/student-home">خانه</Link>
+        <Link href="/student-requests">درخواست های من</Link>
+        <Link href="/student-courses">درس های من</Link>
       </div>
 
       <div
@@ -49,7 +53,8 @@ const Header = () => {
         }
       >
         <div onClick={handleClick} className="cursor-pointer">
-          {user?.name ?? "بی نام"}
+          {isMounted &&
+            `${falsyString(user?.first_name)} ${falsyString(user?.last_name)}`}
         </div>
         <img
           src={"/icons8-administrator-male-26.png"}
@@ -67,12 +72,12 @@ const Header = () => {
         }}
         className="mt-3"
       >
-        <a href="/student-profile">
+        <Link href="/student-profile">
           <MenuItem onClick={handleClose}>پروفایل</MenuItem>
-        </a>
-        <a href="/student-profile-edit">
+        </Link>
+        <Link href="/student-profile-edit">
           <MenuItem onClick={handleClose}>ویرایش</MenuItem>
-        </a>
+        </Link>
         <MenuItem
           onClick={() => {
             localStorage.removeItem(DRF_TOKEN_KEY);

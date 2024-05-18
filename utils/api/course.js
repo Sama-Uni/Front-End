@@ -35,3 +35,18 @@ export const getStudentCourseAPI = async () => {
   const response = await apiService.get(`/users/student/home/`);
   return response.data;
 };
+
+export const getCourseRequestProfessorAPI = async (id) => {
+  const response = await apiService.get(`/users/request/professor/${id}`);
+
+  return response.data;
+};
+
+export const createCourseRequestAPI = async ({ professorId, ...data }) => {
+  const response = await apiService.post(
+    `/users/request/professor/${professorId}`,
+    data
+  );
+
+  return response.data;
+};

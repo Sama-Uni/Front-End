@@ -2,6 +2,7 @@ import ProfessorGuard from "@/components/guards/professorGuard";
 import Layout from "@/components/layout";
 import { creatCourseAPI } from "@/utils/api/course";
 import { getUser } from "@/utils/user";
+import { Button } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -25,7 +26,7 @@ const NewCours = () => {
   const [formValue, setFormValue] = useState({
     name: "",
     term: 4022,
-    required_TAs: 3,
+    required_TAs: 1,
     minPoint: 12,
     passCourse: 1,
     description: "",
@@ -59,7 +60,7 @@ const NewCours = () => {
             </p>
             <form
               onSubmit={handleSubmitClick}
-              className={"flex flex-col w-4/6 gap-8 bg-gray-500  p-5"}
+              className={"flex flex-col w-4/6 gap-8 bg-gray-400  p-5"}
             >
               <div className={"text-[#222831] grid grid-cols-2 gap-4"}>
                 <div className={"flex flex-row gap-2"}>
@@ -105,8 +106,16 @@ const NewCours = () => {
                     className={"bg-gray-200 p-1 rounded-lg"}
                   >
                     {/*<optgroup label="Swedish Cars">*/}
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
                     <option value={3}>3</option>
+                    <option value={4}>4</option>
                     <option value={5}>5</option>
+                    <option value={6}>6</option>
+                    <option value={7}>7</option>
+                    <option value={8}>8</option>
+                    <option value={9}>9</option>
+                    <option value={10}>10</option>
                     {/*</optgroup>*/}
                   </select>
                 </div>
@@ -125,7 +134,14 @@ const NewCours = () => {
                   >
                     {/*<optgroup label="Swedish Cars">*/}
                     <option value={12}>12</option>
+                    <option value={13}>13</option>
+                    <option value={14}>14</option>
                     <option value={15}>15</option>
+                    <option value={16}>16</option>
+                    <option value={17}>17</option>
+                    <option value={18}>18</option>
+                    <option value={19}>19</option>
+                    <option value={20}>20</option>
                     {/*</optgroup>*/}
                   </select>
                 </div>
@@ -174,21 +190,25 @@ const NewCours = () => {
               </div>
 
               <div className={" w-full flex justify-center items-start gap-3"}>
-                <button
+                <Button
                   type="submit"
+                  variant="contained"
+                  color="success"
                   className={"bg-[#76ABAE] w-1/3 py-2 rounded-lg"}
                 >
                   {creatCourseMutation.isPending ? "درحال ذخیره..." : "ذخیره"}
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="contained"
                   type="button"
+                  color="error"
                   onClick={() => {
                     router.push("/professor-home");
                   }}
                   className={"bg-[#76ABAE] w-1/3 py-2 rounded-lg"}
                 >
                   انصراف
-                </button>
+                </Button>
               </div>
             </form>
           </div>
