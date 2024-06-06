@@ -6,10 +6,10 @@ import {
 } from "@/utils/api/course";
 import { falsyString } from "@/utils/falsyString";
 import { getUser } from "@/utils/user";
-import { Button, Modal } from "@mui/material";
+import { Button } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 
 const StuHome = () => {
@@ -35,22 +35,32 @@ const StuHome = () => {
     },
   });
 
-  const [formValue, setFormValue] = useState({
-    enter_year: "",
-    field_of_study: "",
-    gpa: 16,
-  });
+  const [search, setSearch] = useState("");
 
-  const createRequest = () => {
+  const filteredCourses = useMemo(() => {
+    return (
+      data?.filter((course) => {
+        return (
+          course.name.includes(search) || course.professorName.includes(search)
+        );
+      }) ?? []
+    );
+  }, [data, search]);
+
+  const createRequest = (professorId, courseId) => {
     const user = getUser();
+    if (!user.major || !user.gpa || !user.enter_year) {
+      toast.error("برای ثبت درخواست باید پروفایل خود را تکمیل کنید");
+      return;
+    }
     createRequestMutation.mutate({
-      professorId: selectedCourse.professor,
-      enter_year: formValue.enter_year,
-      field_of_study: formValue.field_of_study,
-      point: 4,
-      gpa: formValue.gpa,
+      professorId: professorId,
+      enter_year: user.enter_year,
+      field_of_study: user.major,
+      point: user.average,
+      gpa: user.gpa,
       status: "uncertain",
-      course: selectedCourse.id,
+      course: courseId,
       student: user.studentid,
     });
   };
@@ -67,7 +77,18 @@ const StuHome = () => {
             {isLoading ? (
               "..."
             ) : (
-              <div className="flex justify-center items-center w-full">
+              <div className="flex flex-col justify-center items-center w-full gap-5">
+                <div id={"search"} className={"w-1/2"}>
+                  <input
+                    type="search"
+                    id="search-form"
+                    className={
+                      "w-full h-full text-black bg-gray-300 border-2 rounded-xl px-3 focus:outline-none focus:border-slate-400"
+                    }
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="جست و جو اسم درس و استاد"
+                  />
+                </div>
                 <div className="w-3/4 bg-white rounded-lg shadow-md p-8 overflow-y-auto">
                   <div className="flex flex-col justify-center items-start mb-4">
                     <h1 className="text-xl font-bold text-right justify-end text-black">
@@ -75,7 +96,7 @@ const StuHome = () => {
                     </h1>
                     <div className="w-full h-px bg-gray-400"></div>
                   </div>
-                  {data.map((course) => (
+                  {filteredCourses.map((course) => (
                     <div
                       key={`course-${course.id}`}
                       className="flex flex-row bg-gray-200 rounded-md p-4 mb-4 gap-8"
@@ -114,11 +135,12 @@ const StuHome = () => {
                           variant="contained"
                           color="success"
                           onClick={() => {
-                            setSelectedCourse(course);
-                            setIsModalOpen(true);
+                            createRequest(course.professor, course.id);
                           }}
                         >
-                          ارسال درخواست
+                          {createRequestMutation.isPending
+                            ? "درحال ثبت..."
+                            : "ارسال درخواست"}
                         </Button>
                       </div>
                     </div>
@@ -128,73 +150,6 @@ const StuHome = () => {
             )}
           </div>
         </div>
-
-        <Modal
-          open={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-          }}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            direction: "rtl",
-          }}
-        >
-          <form className="flex flex-col w-[700px] min-h-96 justify-center bg-white p-10 gap-7">
-            <div className={"flex flex-row gap-2 w-full"}>
-              <label className={"text-black min-w-24"}>رشته تحصیلی:</label>
-              <input
-                name="filed"
-                onChange={(event) => {
-                  setFormValue({
-                    ...formValue,
-                    field_of_study: event.target.value,
-                  });
-                }}
-                id="filed"
-                className={"bg-gray-200 p-1 rounded-lg w-full text-black"}
-              ></input>
-            </div>
-
-            <div className={"flex flex-row gap-2 w-full"}>
-              <label className={"text-black min-w-24"}>معدل:</label>
-              <input
-                name="gpa"
-                onChange={(event) => {
-                  setFormValue({ ...formValue, gpa: event.target.value });
-                }}
-                id="gpa"
-                className={"bg-gray-200 p-1 rounded-lg w-full text-black"}
-              ></input>
-            </div>
-
-            <div className={"flex flex-row gap-2 w-full"}>
-              <label className={"text-black min-w-24"}>سال ورودی:</label>
-              <input
-                name="year"
-                onChange={(event) => {
-                  setFormValue({
-                    ...formValue,
-                    enter_year: event.target.value,
-                  });
-                }}
-                id="year"
-                className={"bg-gray-200 p-1 rounded-lg w-full text-black"}
-              ></input>
-            </div>
-
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => {
-                createRequest();
-              }}
-            >
-              {createRequestMutation.isLoading ? "درحال ثبت..." : "ثبت"}
-            </Button>
-          </form>
-        </Modal>
       </Layout>
     </StudentGuard>
   );

@@ -44,7 +44,6 @@ const Header = () => {
       >
         <Link href="/professor-home">خانه</Link>
         <Link href="/professor-new-request">تعریف درس جدید</Link>
-        <Link href="/professor-select-student">درخواست ها</Link>
       </div>
 
       <div

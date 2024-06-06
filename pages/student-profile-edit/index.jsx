@@ -1,56 +1,105 @@
-import Header from "@/components/header_TAs";
-import Layout from "@/components/layout";
 import StudentGuard from "@/components/guards/studentGuard";
+import Layout from "@/components/layout";
+import { USER_KEY } from "@/utils/api/axios";
+import { updateStudentProfile } from "@/utils/api/user";
+import { getUser } from "@/utils/user";
+import { Button } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const ProfessorProfileEdit = () => {
+  const router = useRouter();
+  const user = getUser();
+
+  const [profile, setProfile] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    university: "",
+    college: "",
+    about_me: "",
+    gpa: "",
+    enter_year: "",
+    major: "",
+  });
+
+  useEffect(() => {
+    setProfile({
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      university: user.university,
+      college: user.college,
+      about_me: user.about_me,
+      gpa: user.gpa,
+      enter_year: user.enter_year,
+      major: user.major,
+    });
+  }, []);
+
+  const updateProfileMutation = useMutation({
+    mutationFn: updateStudentProfile,
+    onSuccess() {
+      localStorage.setItem(USER_KEY, JSON.stringify({ ...user, ...profile }));
+      toast.success("عملیات با موفقیت انجام شد");
+
+      router.push("/student-profile");
+    },
+    onError() {
+      toast.error("مشکلی بوجود آمده است");
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    updateProfileMutation.mutate(profile);
+  };
+
   return (
     <StudentGuard>
       <Layout>
         <div
           className={
-            " w-screen h-screen bg-white overflow-x-hidden flex flex-row"
+            " w-screen h-screen bg-white overflow-x-hidden flex flex-row justify-center"
           }
           dir={"rtl"}
         >
-          <div className={"flex justify-center items-center w-2/6 h-full"}>
-            <div
-              className={
-                "border border-slate-600 w-3/6 h-2/3 rounded-lg flex flex-col items-center gap-2"
-              }
-            >
-              <img
-                src={"./icons8-test-account-100.png"}
-                className={"h-32 w-32"}
-              />
-              <h1 className={"text-black text-xl font-bold"}>مهران رضایی</h1>
-              <p className={"text-black text-sm "}>8414544</p>
-              <button
-                className={
-                  "bg-[#76ABAE] text-black py-2 px-5 border rounded-xl my-3"
-                }
-              >
-                ویرایش عکس
-              </button>
-              <button
-                className={
-                  "bg-[#76ABAE] text-black py-2 px-5 border rounded-xl "
-                }
-              >
-                تغییر رمز ورود
-              </button>
-            </div>
-          </div>
           <form
+            onSubmit={handleSubmit}
             className={
               "flex flex-col w-4/6 h-full items-center justify-center px-20"
             }
           >
             <div className={"text-[#222831] w-full grid grid-cols-2 gap-4"}>
               <div className={"flex flex-col"}>
-                <label className={"pr-3 pb-2"}>نام کاربری</label>
+                <label className={"pr-3 pb-2"}>نام</label>
                 <input
                   type="text "
-                  value={"مهران رضایی"}
+                  value={profile.first_name}
+                  onChange={(e) =>
+                    setProfile((prof) => ({
+                      ...prof,
+                      first_name: e.target.value,
+                    }))
+                  }
+                  className=" text-black-900 rounded-3xl p-3
+                                bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
+                />
+              </div>
+              <div className={"flex flex-col"}>
+                <label className={"pr-3 pb-2"}> نام خانوادگی </label>
+                <input
+                  type="text "
+                  value={profile.last_name}
+                  onChange={(e) =>
+                    setProfile((prof) => ({
+                      ...prof,
+                      last_name: e.target.value,
+                    }))
+                  }
                   className=" text-black-900 rounded-3xl p-3
                                 bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
                 />
@@ -59,7 +108,10 @@ const ProfessorProfileEdit = () => {
                 <label className={"pr-3 pb-2"}>ایمیل</label>
                 <input
                   type="text "
-                  value={"m.rezaei@eng.ui.ac.ir"}
+                  value={profile.email}
+                  onChange={(e) =>
+                    setProfile((prof) => ({ ...prof, email: e.target.value }))
+                  }
                   className=" text-black-900 rounded-3xl p-3
                                 bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
                 />
@@ -68,16 +120,64 @@ const ProfessorProfileEdit = () => {
                 <label className={"pr-3 pb-2"}>دانشگاه</label>
                 <input
                   type="text "
-                  value={"دانشگاه اصفهان"}
+                  value={profile.university}
+                  onChange={(e) =>
+                    setProfile((prof) => ({
+                      ...prof,
+                      university: e.target.value,
+                    }))
+                  }
                   className=" text-black-900 rounded-3xl p-3
                                 bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
                 />
               </div>
-              <div className={"flex flex-col"}>
+              <div className={"flex flex-col w-full"}>
                 <label className={"pr-3 pb-2"}>دانشکده</label>
                 <input
                   type="text "
-                  value={"کامپیوتر"}
+                  value={profile.college}
+                  onChange={(e) =>
+                    setProfile((prof) => ({ ...prof, college: e.target.value }))
+                  }
+                  className=" text-black-900 rounded-3xl p-3
+                                bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
+                />
+              </div>
+              <div className={"flex flex-col w-full"}>
+                <label className={"pr-3 pb-2"}>رشته</label>
+                <input
+                  type="text "
+                  value={profile.major}
+                  onChange={(e) =>
+                    setProfile((prof) => ({ ...prof, major: e.target.value }))
+                  }
+                  className=" text-black-900 rounded-3xl p-3
+                                bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
+                />
+              </div>
+              <div className={"flex flex-col w-full"}>
+                <label className={"pr-3 pb-2"}>سال ورودی</label>
+                <input
+                  type="text "
+                  value={profile.enter_year}
+                  onChange={(e) =>
+                    setProfile((prof) => ({
+                      ...prof,
+                      enter_year: e.target.value,
+                    }))
+                  }
+                  className=" text-black-900 rounded-3xl p-3
+                                bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
+                />
+              </div>
+              <div className={"flex flex-col w-full"}>
+                <label className={"pr-3 pb-2"}>معدل</label>
+                <input
+                  type="text "
+                  value={profile.gpa}
+                  onChange={(e) =>
+                    setProfile((prof) => ({ ...prof, gpa: e.target.value }))
+                  }
                   className=" text-black-900 rounded-3xl p-3
                                 bg-[#EEEEEE] text-lg placeholder:text-[#8B8C8D] focus:outline-none focus:ring-0 shadow-inner"
                 />
@@ -90,18 +190,22 @@ const ProfessorProfileEdit = () => {
               <label className={"pr-3 pb-2"}>درباره من :</label>
               <input
                 type="text "
-                value={"به نام معمار هستی..."}
+                value={profile.about_me}
+                onChange={(e) =>
+                  setProfile((prof) => ({ ...prof, about_me: e.target.value }))
+                }
                 className=" text-black-900 rounded-3xl p-3 w-full h-32 text-start
                                 bg-[#EEEEEE] text-lg placeholder:text-black focus:outline-none focus:ring-0 shadow-inner"
               />
             </div>
-            <button
-              className={
-                "py-2 px-20 bg-[#76ABAE] mt-4 rounded-lg shadow shadow-xl shadow-gray-400"
-              }
+            <Button
+              type="submit"
+              variant="contained"
+              color="success"
+              className="!mt-5"
             >
-              ذخیره
-            </button>
+              {updateProfileMutation.isPending ? "در حال ذخیره" : "ذخیره"}
+            </Button>
           </form>
         </div>
       </Layout>
